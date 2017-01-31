@@ -1,3 +1,3 @@
 #!/bin/bash
 xterm -maximized -e "/home/mike/gocode/src/github.com/gizak/termui/_example/table"
-## -fa 'Monospace' -fs 14
+## -fa 'Monospace' -fs 20

@@ -33,7 +33,7 @@ func main() {
 
 	excPar := ui.NewPar(usdVal)
 	excPar.Height = 4
-	excPar.BorderLabel = "Exchange Rate"
+	excPar.BorderLabel = "Exchange"
 	excPar.Width = 5
 
 	w, err := weather.GetWeather()
