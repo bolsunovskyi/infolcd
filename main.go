@@ -50,12 +50,13 @@ func main() {
 	weatherPar.Width = 5
 
 
-	excCol := ui.NewCol(4, 0, excPar)
-	timeCol := ui.NewCol(4, 0, timePar)
-	weatherCol := ui.NewCol(4, 0, weatherPar)
+	excCol := ui.NewCol(6, 0, excPar)
+	timeCol := ui.NewCol(6, 0, timePar)
+	weatherCol := ui.NewCol(6, 0, weatherPar)
 
 
-	ui.Body.AddRows(ui.NewRow(timeCol, excCol, weatherCol));
+	ui.Body.AddRows(ui.NewRow(timeCol, excCol));
+	ui.Body.AddRows(ui.NewRow(weatherCol));
 	ui.Body.Align()
 	ui.Render(ui.Body)
 
