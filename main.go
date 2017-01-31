@@ -26,7 +26,7 @@ func main() {
 	usd, err := exchange.GetUSD()
 	var usdVal string
 	if err != nil {
-		usdVal = err.Error()
+		usdVal = "Error :("
 	} else {
 		usdVal = fmt.Sprintf("%.2f/%.2f", usd.LatestRates.WholeBuy, usd.LatestRates.WholeSale)
 	}
@@ -39,7 +39,7 @@ func main() {
 	w, err := weather.GetWeather()
 	var weatherVal string
 	if err != nil {
-		weatherVal = err.Error()
+		weatherVal = "Error :("
 	} else {
 		weatherVal = fmt.Sprintf("%.1f, %s\n%s", w.Main.Temp, w.Weather[0].Main, w.Weather[0].Description)
 	}
