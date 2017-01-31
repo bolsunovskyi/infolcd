@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Name=GoLang
+Comment=Test the terminal running a command inside it
+Exec=/home/mike/xterm.sh
+Icon=utilities-terminal
+Terminal=false
+Type=Application
+Categories=Application;
