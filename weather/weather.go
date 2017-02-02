@@ -4,10 +4,13 @@ import (
 	"encoding/json"
 	"net/http"
 	"fmt"
+	"time"
 )
 
-const key string = "26f430f11e19862ae62c3b11fbea4c37"
-const city string = "703448"
+type Listener interface {
+	Update(r *Response)
+}
+
 const url string = "http://api.openweathermap.org/data/2.5/weather?id=%d&apikey=%s&units=metric"
 
 type Weather struct {
@@ -26,6 +29,18 @@ type Response struct {
 	Main		Main
 }
 
+func Listen(l Listener, cityID int, apiKey string) {
+	go func() {
+		t := time.NewTicker(time.Minute)
+		for range t.C {
+			rsp, err := GetWeather(cityID, apiKey)
+			if err == nil {
+				l.Update(rsp)
+			}
+		}
+	}()
+}
+
 func GetWeather(cityID int, apiKey string) (*Response, error) {
 	rsp, err := http.Get(fmt.Sprintf(url, cityID, apiKey))
 	if err != nil {
@@ -39,3 +54,4 @@ func GetWeather(cityID int, apiKey string) (*Response, error) {
 	}
 	return &resp, nil
 }
+

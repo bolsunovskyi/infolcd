@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"encoding/json"
 	"errors"
+	"time"
 )
 
 const url string = "https://obmenka.kharkov.ua/api/rates/020016"
@@ -29,6 +30,22 @@ type Response struct {
 	To		string
 	LatestRates	LatestRates	`json:"latestRates"`
 	BankRates	BankRates	`json:"bankRates"`
+}
+
+type Listener interface {
+	Update(r *Response)
+}
+
+func Listen(l Listener) {
+	go func() {
+		t := time.NewTicker(time.Minute)
+		for range t.C {
+			rsp, err := GetUSD()
+			if err == nil {
+				l.Update(rsp)
+			}
+		}
+	}()
 }
 
 func GetUSD() (*Response, error) {
