@@ -8,7 +8,7 @@ import (
 
 const key string = "26f430f11e19862ae62c3b11fbea4c37"
 const city string = "703448"
-const url string = "http://api.openweathermap.org/data/2.5/weather?id=%s&apikey=%s&units=metric"
+const url string = "http://api.openweathermap.org/data/2.5/weather?id=%d&apikey=%s&units=metric"
 
 type Weather struct {
 	Main		string
@@ -26,8 +26,8 @@ type Response struct {
 	Main		Main
 }
 
-func GetWeather() (*Response, error) {
-	rsp, err := http.Get(fmt.Sprintf(url, city, key))
+func GetWeather(cityID int, apiKey string) (*Response, error) {
+	rsp, err := http.Get(fmt.Sprintf(url, cityID, apiKey))
 	if err != nil {
 		return nil, err
 	}
