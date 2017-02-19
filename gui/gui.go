@@ -13,7 +13,7 @@ var Weather string
 
 var timePar, exchangePar, weatherPar *termui.Par
 
-func init() {
+func Init() {
 	Exchange = "0/0"
 	Weather = "0"
 

@@ -35,14 +35,15 @@ func init() {
 
 func main() {
 	if weatherApiKey == "" {
-		gui.Close()
 		log.Println("Open Weather api key is required")
 		return
 	}
 
+	gui.Init()
+	defer gui.Close()
+
 	weather.Listen(wt{}, cityID, weatherApiKey)
 	exchange.Listen(ex{})
 
-	defer gui.Close()
 	gui.Loop()
 }
