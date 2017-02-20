@@ -9,6 +9,8 @@ import (
 
 type Listener interface {
 	Update(r *Response)
+	GetCityID() int
+	GetAPIKey() string
 }
 
 const url string = "http://api.openweathermap.org/data/2.5/weather?id=%d&apikey=%s&units=metric"
@@ -29,11 +31,11 @@ type Response struct {
 	Main		Main
 }
 
-func Listen(l Listener, cityID int, apiKey string) {
+func Listen(l Listener) {
 	go func() {
 		t := time.NewTicker(time.Minute)
 		for range t.C {
-			rsp, err := GetWeather(cityID, apiKey)
+			rsp, err := GetWeather(l.GetCityID(), l.GetAPIKey())
 			if err == nil {
 				l.Update(rsp)
 			}

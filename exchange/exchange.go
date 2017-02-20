@@ -1,46 +1,23 @@
 package exchange
 
 import (
-	"net/http"
-	"encoding/json"
-	"errors"
 	"time"
+	"github.com/bolsunovskyi/pb_api"
+	"errors"
 )
 
-const url string = "https://obmenka.kharkov.ua/api/rates/020016"
-
-type LatestRates struct {
-	WholeSale	float32		`json:"wholeSale"`
-	WholeBuy	float32		`json:"wholeBuy"`
-}
-
-type BankUnitRates struct {
-	RetailSale	float32
-	RetailBuy	float32
-}
-
-type BankRates struct {
-	PrivatBankRates		BankUnitRates
-	NBURates		BankUnitRates
-}
-
-type Response struct {
-	ID		int
-	From		string
-	To		string
-	LatestRates	LatestRates	`json:"latestRates"`
-	BankRates	BankRates	`json:"bankRates"`
-}
-
 type Listener interface {
-	Update(r *Response)
+	Update(r *pb_api.ExchangeRate)
+	GetPBID() string
+	GetPBSecret() string
 }
 
 func Listen(l Listener) {
 	go func() {
-		t := time.NewTicker(time.Minute)
+		t := time.NewTicker(time.Minute * 5)
 		for range t.C {
-			rsp, err := GetUSD()
+			rsp, err := GetUSD(l.GetPBID(), l.GetPBSecret())
+			//TODO: think about this section
 			if err == nil {
 				l.Update(rsp)
 			}
@@ -48,20 +25,24 @@ func Listen(l Listener) {
 	}()
 }
 
-func GetUSD() (*Response, error) {
-	rsp, err := http.Get(url)
+func GetUSD(pbid string, pbsecret string) (*pb_api.ExchangeRate, error) {
+	pb_api.Init(pbid, pbsecret)
+	ss, err := pb_api.SessionCreate()
 	if err != nil {
 		return nil, err
 	}
-	resps := make([]Response, 0)
+	defer pb_api.SessionRemove(ss.ID)
 
-	err = json.NewDecoder(rsp.Body).Decode(&resps)
+	rates, err := pb_api.GetExchangeRate(pb_api.RATE_PB, ss.ID)
 	if err != nil {
 		return nil, err
 	}
-	if len(resps) > 0 {
-		return &resps[0], nil
+
+	for _, v := range *rates {
+		if v.ExchangeRate.CCY == "USD" {
+			return &v.ExchangeRate, nil
+		}
 	}
 
-	return nil, errors.New("Empty response")
+	return nil, errors.New("Unexpected error")
 }
