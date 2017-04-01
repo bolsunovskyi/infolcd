@@ -1,7 +1,7 @@
 package temp
 
 import (
-	"github.com/d2r2/go-dht"
+	"github.com/bolsunovskyi/go-dht"
 	"time"
 )
 
