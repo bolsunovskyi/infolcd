@@ -1,9 +1,9 @@
 package exchange
 
 import (
-	"time"
-	"github.com/bolsunovskyi/pb_api"
 	"errors"
+	"github.com/bolsunovskyi/pb_api"
+	"time"
 )
 
 type Listener interface {

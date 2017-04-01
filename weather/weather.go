@@ -2,8 +2,8 @@ package weather
 
 import (
 	"encoding/json"
-	"net/http"
 	"fmt"
+	"net/http"
 	"time"
 )
 
@@ -16,19 +16,19 @@ type Listener interface {
 const url string = "http://api.openweathermap.org/data/2.5/weather?id=%d&apikey=%s&units=metric"
 
 type Weather struct {
-	Main		string
-	Description	string
+	Main        string
+	Description string
 }
 
 type Main struct {
-	Temp		float32
-	Pressure	float32
-	Humidity	float32
+	Temp     float32
+	Pressure float32
+	Humidity float32
 }
 
 type Response struct {
-	Weather		[]Weather
-	Main		Main
+	Weather []Weather
+	Main    Main
 }
 
 func Listen(l Listener) {
@@ -56,4 +56,3 @@ func GetWeather(cityID int, apiKey string) (*Response, error) {
 	}
 	return &resp, nil
 }
-
