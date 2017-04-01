@@ -31,7 +31,7 @@ func (t temp) GetGPIO() int {
 }
 
 func (t temp) Update(r *tmp.Response) {
-	gui.Temp = fmt.Sprintf("%0.1f\n%0.1f", r.Temp, r.Humidity)
+	gui.Temp = fmt.Sprintf("Temp: %0.1f *C\nHumidity: %0.1f %%", r.Temp, r.Humidity)
 	gui.Update()
 }
 
